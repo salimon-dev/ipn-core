@@ -20,11 +20,11 @@ export default async function login(req: Request, res: Response) {
   const body = validate(req, res);
   if (!body) return;
   const { name, password } = body;
-
   const user = await UsersModel.findOne({
     name,
     password: md5(password),
   });
+  console.log(user);
   if (!user) {
     res.status(401).send({ message: "unauthorized" });
     return;
