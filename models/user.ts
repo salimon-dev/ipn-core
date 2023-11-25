@@ -12,6 +12,7 @@ export interface IUser extends IEntity {
 
 const UserSchema = new Schema<IUser>({
   name: { type: String, required: true },
+  avatar: { type: String, required: true },
   nickName: { type: String, required: true },
   password: { type: String, required: true },
   status: { type: String, required: true },

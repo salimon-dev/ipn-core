@@ -23,11 +23,18 @@ export default async function register(req: Request, res: Response) {
   if (!body) return;
   const { name, nickName, password, avatar } = body;
 
+  const existingUser = await UsersModel.findOne({ name });
+  if (existingUser) {
+    res.status(400).send([{ path: "name", message: "user with this name exists." }]);
+    return;
+  }
   const user = await UsersModel.create({
     name,
     nickName,
     password: md5(password),
     avatar,
+    balance: 0,
+    status: "active",
     createdAt: now(),
     updatedAt: now(),
   });

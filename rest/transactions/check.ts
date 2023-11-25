@@ -16,7 +16,7 @@ function validate(req: Request, res: Response) {
   }
 }
 
-export default async function send(req: Request, res: Response) {
+export default async function check(req: Request, res: Response) {
   const { user: src } = req as Request & { user: UserDoc };
   const body = validate(req, res);
   if (!body) {
