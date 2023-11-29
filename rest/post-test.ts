@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { UsersModel } from "../models/user";
 import { TransactionsModel } from "../models/transaction";
 
-export default async function testClean(req: Request, res: Response) {
+export default async function postTest(req: Request, res: Response) {
   const testUser1 = await UsersModel.findOne({ name: "testuser1" });
   if (testUser1) {
     // delete all transactions

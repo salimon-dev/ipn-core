@@ -8,7 +8,10 @@ dotenv.config();
 
 import auth from "./rest/auth/routes";
 import transactions from "./rest/transactions/routes";
-import testClean from "./rest/test-clean";
+import verify from "./rest/verify/routes";
+
+import postTest from "./rest/post-test";
+import preTest from "./rest/pre-test";
 
 mongoose.connect(process.env["MONGO_URI"] || "").then(() => {
   console.log("connected to the db");
@@ -22,8 +25,10 @@ const io = new Server(server);
 
 app.use("/auth", auth);
 app.use("/transactions", transactions);
+app.use("/verify", verify);
 
-app.post("/test/clean", testClean);
+app.post("/test/prepare", preTest);
+app.post("/test/clean", postTest);
 app.get("/", (req, res) => {
   res.send({
     name: "salimon official ipn",
