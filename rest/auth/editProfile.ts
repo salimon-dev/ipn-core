@@ -18,7 +18,7 @@ function validate(req: Request, res: Response) {
   }
 }
 
-export default async function edit(req: Request, res: Response) {
+export default async function editProfile(req: Request, res: Response) {
   const { user } = req as Request & { user: UserDoc };
   const body = validate(req, res);
   if (!body) return;
@@ -36,7 +36,6 @@ export default async function edit(req: Request, res: Response) {
   if (password) {
     user.password = md5(password);
   }
-
   await user.save();
-  res.send(user);
+  res.send(user.toJSON());
 }

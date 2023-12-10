@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
 import * as yup from "yup";
-import { UsersModel } from "../../models/user";
 import { calcFee } from "../../utils";
 function validate(req: Request, res: Response) {
   try {
-    const validationSchema = yup.object({ amount: yup.number().required() });
+    const validationSchema = yup.object({ amount: yup.number().min(1).required() });
     const result = validationSchema.validateSync(req.body, { abortEarly: true });
     return result;
   } catch (err) {

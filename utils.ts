@@ -14,7 +14,10 @@ export function generateJWT(data: string) {
   });
 }
 export function verifyJWT(data: string) {
-  return jwt.verify(data, process.env["SECRET_TOKEN"] || "nosecretbecauseyouarestupid") as string;
+  const result = jwt.verify(data, process.env["SECRET_TOKEN"] || "nosecretbecauseyouarestupid") as {
+    data: string;
+  };
+  return result.data;
 }
 
 export function calcFee(amount: number) {

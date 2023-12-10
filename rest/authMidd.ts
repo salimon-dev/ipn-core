@@ -13,12 +13,17 @@ export default async function AuthMidd(req: Request, res: Response, next: NextFu
     res.status(401).send({ message: "unauthorized" });
     return;
   }
-  const userId = verifyJWT(token);
-  const user = await UsersModel.findById(userId);
-  if (!user) {
+  try {
+    const userId = verifyJWT(token);
+    const user = await UsersModel.findById(userId);
+    if (!user) {
+      res.status(401).send({ message: "unauthorized" });
+      return;
+    }
+    (req as Request & { user: UserDoc }).user = user;
+    next();
+  } catch (error) {
+    console.log(error);
     res.status(401).send({ message: "unauthorized" });
-    return;
   }
-  (req as Request & { user: UserDoc }).user = user;
-  next();
 }

@@ -17,9 +17,9 @@ export default async function user(req: Request, res: Response) {
   const { name } = body;
   const user = await UsersModel.findOne({ name });
   if (!user) {
-    res.status(404).send({ message: "user not found" });
+    res.send({ ok: false });
     return;
   }
   // TODO: only send public fields
-  res.send(user);
+  res.send({ ok: true, user });
 }

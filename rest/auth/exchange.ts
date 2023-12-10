@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import * as yup from "yup";
-import { UsersModel } from "../../models/user";
+import { UserDoc } from "../../models/user";
 import { generateJWT, md5, now } from "../../utils";
 function validate(req: Request, res: Response) {
   try {
     const validationSchema = yup.object({
-      name: yup.string().required(),
-      password: yup.string().required(),
+      avatar: yup.string().optional(),
+      nickName: yup.string().optional(),
+      name: yup.string().optional(),
+      password: yup.string().optional(),
     });
     const result = validationSchema.validateSync(req.body, { abortEarly: false });
     return result;
@@ -16,18 +18,8 @@ function validate(req: Request, res: Response) {
   }
 }
 
-export default async function login(req: Request, res: Response) {
-  const body = validate(req, res);
-  if (!body) return;
-  const { name, password } = body;
-  const user = await UsersModel.findOne({
-    name,
-    password: md5(password),
-  });
-  if (!user) {
-    res.status(401).send({ message: "unauthorized" });
-    return;
-  }
+export default async function exchange(req: Request, res: Response) {
+  const { user } = req as Request & { user: UserDoc };
   const token = generateJWT(`${user._id}`);
   const expiresAt = parseInt(process.env["TOKEN_AGE"] || "3600") + now();
   res.send({
